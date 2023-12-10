@@ -1,0 +1,238 @@
+# UIC App - University of illinois at Chicago
+# Author: Andrew Mcclendon
+# Descriptipn: This program provides info and services related to uic
+# It allows users to check which resturanter are open during the summer
+# adds phone numbers to their contacts and recieve course advice
+# 10-21-23
+
+
+### function for when resturants are open ###
+def student_center(resturant):
+    on = True
+    while on == True:
+        if resturant == "United Table":
+            print("United Table is open this summer.")
+            on = False
+        elif resturant == "Circle Burger":
+            print("Circle Burger is not open this summer.")
+            on = False
+        elif resturant == "Chick-fil-A":
+            print("Chick-fil-A is open this summer.")
+            on = False
+        elif resturant == "Crave Chicago":
+            print("Crave Chicago is not open this summer.")
+            on = False
+        elif resturant == "Dunkin' Donuts":
+            print("Dunkin' Donuts is open this summer.")
+            on = False
+        elif resturant == "Market @ Halsted":
+            print("Market @ Halsted is open this summer.")
+            on = False
+        elif resturant == "Panda Express":
+            print("Panda Express is not open this summer.")
+            on = False
+        elif resturant == "Moe's Southwest Grill":
+            print("Moe's Southwest Grill is open this summer.")
+            on = False
+        elif resturant == "Sbarro":
+            print("Sbarro is not open this summer.")
+            on = False
+        elif resturant == "Subway":
+            print("Subway is not open this summer.")
+            on = False
+        elif resturant == "Wow Bao":
+            print("Wow Bao is not open this summer.")
+            on = False
+        else:
+            print("sorry that dosent work please try again")
+            resturant = input("")
+            on = True
+### Function for providing info on cs clubs at uic ###    
+def cs_club_info(club):
+    integer = 0
+    full_name = ""
+    website =  ""
+    boolean = True
+    club = club.upper()
+    on = True
+    while on == True:
+        
+        if club == "WICS":
+            full_name = "Women in Computer Science"
+            website = "https://wics.students.uic.edu/"
+            boolean = True
+            integer = 1
+            on = False
+        elif club == "LOGICA":
+            full_name = "Latinx Organization for Growth in Computing and Academics"
+            website = "https://logica.students.uic.edu/"
+            boolean = True
+            integer = 1
+            on = False
+        elif club == "ACM":
+            full_name = "Association for Computing Machinery"
+            website = "https://acm.cs.uic.edu/about/"
+            boolean = True
+            integer = 1
+            on = False
+        elif club == "LUG":
+            full_name = "Linux User Group"
+            website = "https://lug.cs.uic.edu/about.html"
+            boolean = False
+            integer = 1
+            on = False
+        
+        else:
+            integer = 3
+            full_name = "Not a recognized club."
+            website = ""
+            boolean = False
+            
+            if club in ("SSBC", "SWE", "VESE", "AIAA", "AICHE", "ASCE", "ASHRAE", "ASME", "BMES", "BSJ", "CMAA", "ECS", "EDT", "EMBS", "EWH", "ESW", "GDSC", "IEEE", "IISE", "NSBE", "OSTEM", "SAE", "SASE", "SHPE", "SSBC", "SWE", "VESE", "AHMβ", "HKN", "π𝜏Σ", "ΤΒΠ" ) :
+                full_name = "COE"
+                integer = 2
+                website = "https://engineering.uic.edu/undergraduate/student-groups/"
+                boolean = False
+                return(full_name, website, integer)
+            on = True
+            print(full_name)
+            club = input("try different name:")
+            
+        
+        
+        
+    return(full_name, website, integer)
+    
+    
+
+    return(integer, full_name, website, boolean)
+### adds contacts from user input function ###
+def contacts(numbers_dict, add_friend,):
+    boolean = False
+    if len(add_friend) < 2:
+        number_of_contacts = len(numbers_dict)  
+    else:
+        new_name, new_phone = add_friend[0], add_friend[1]
+        if (type(new_name) != str or type(new_phone) != str):
+            number_of_contacts = len(numbers_dict)  
+            boolean = False
+        else:
+            if new_name in numbers_dict:
+                number_of_contacts = len(numbers_dict)
+                boolean = False
+            else: 
+                if len(new_phone) == 12 and new_phone[3] == "-" and new_phone[7] == "-" :
+                    numbers_dict[new_name] = new_phone
+                    number_of_contacts = len(numbers_dict)
+                    boolean = True  
+                else:
+                    boolean = False
+                    number_of_contacts = len(numbers_dict)
+    return number_of_contacts, boolean, numbers_dict
+### make a dictionary for contacts function ###
+def make_dict(filename):
+    file = open(filename)
+    list = file.readlines()
+    dict = {}
+    for line in list:
+        each = line.split()
+        dict[each[0]] = int(each[1])
+    return dict
+### function that provides advice and information about courses ###
+def iadvise(category, multi_major):
+    category = category.lower() + ".txt" 
+    classes = make_dict(category)
+    courses_to_take = []
+    i = 0
+    credits_earned = 0
+    courses_to_take_final = ""
+    total_classes = 0
+    
+    for cs in classes:
+        if cs not in multi_major:
+            courses_to_take.append(cs) 
+    for values in classes.values():
+        total_classes += values
+        
+        for values in classes:
+            if cs == multi_major[i]:
+                credits_earned += values
+                
+                if i < len(multi_major) - 1:
+                        i += 1
+    for cs in multi_major:
+        if cs in classes:
+            credits_earned += classes[cs]
+    
+        
+        credits_to_earn =  total_classes - credits_earned
+    return(credits_earned, total_classes, courses_to_take)
+### function that runs the start menu print ###
+def start_menu():
+        print("Welcome to the UIC App! please input number for what you want to do:\n\n")
+        print("1. Resturants Open During the Summer")
+        print("__________________________________")
+        print("2. Info About College of Engineering Clubs")
+        print("__________________________________")
+        print("3. Add Phone Number to Contacts")
+        print("__________________________________")
+        print("4. Cs Advice")
+        ### gets user input and starts function###
+        option = input("Pick a option 1-4: ")
+        return option
+if __name__ == '__main__':
+    ### turns on and off the program ###
+    power_button = True
+    while power_button == True:
+        option = start_menu()
+        # if option is 1 user will be asked to input a resturant name and the code will check if its open during the summer
+        if option == "1":
+            print("You have chosen option 1\n")
+            print("United Table, Circle Burger, Chick-fil-A \n Crave Chicago, Dunkin' Donuts, Market @ Halsted, \n Panda Express, Moe's Southwest Grill, Sbarro \n Subway, Wow Bao")
+            resturant = input(print("Please enter in a resturant from the above list in the same format: \n"))
+            print(student_center(resturant))
+        # if option 2 user will be prompted to input a club name and the code will provide info about the club if it exist
+        elif option == "2":
+            print("You have chosen option 2\n")
+            club = input("What club would you like to know about?: ")
+            full_name, website, integer = cs_club_info(club)
+            if integer != 3:
+                print("The name of your inputed club is", full_name)
+                print("For more information about this club please visit", website)
+        # if option 3 user will be asked to input a contact name and number Then they will be added to contact list
+        elif option == "3":
+            print("You have chosen option 3\n")
+            name = input("Enter name of contact")
+            contact = input("Enter a phone number: ")
+            add_friend = [name, contact]
+            full_contacts_list = {}
+            contacts, boolean, full_contacts = contacts(full_contacts_list, add_friend)
+            
+            print("you have succesfully added your contacts and have", contacts, "contacts")
+            contact_power = input(print("would you like to see full contact list? (y or n): "))
+            if contact_power == "y":
+                print(full_contacts)
+            ### if option 4 the user will be prompted to input a major and the cs classes they took. THen the code provides advice on what courses to take and how many credit hours they have ###
+        elif option == "4":
+            print("You have chosen option 4\n")
+            print("cs+designmajor\ncsmajor\ncsminor\ndsmajor")
+            major = input("type in a major from the list in from the list above that is your major: ")
+            while major != "cs+designmajor" and major != "csmajor" and major  != "csminor" and major != "dsmajor":
+                major = input("incorrect format please try again")
+            classes = input("What CS classes have you taken (in this format 'CS111, CS211, CS214')")
+            classes = classes.split(", ")
+           
+            print("Warning if you get a output of credits that dont seem right check format of the cs classes you entered!!!")
+
+            earned, total, courses = iadvise(major, classes)
+            print("you have earned", earned, "credits and need", total, "more to graduate. You also need to take these courses", courses)
+        ### goes back to menu if something goes wrong or program completed the task assign ###
+        yes_or_no = ""
+        yes_or_no = input(print("Would you like to go to the menu?(y or n): "))
+        if yes_or_no == "n":
+            power_button = False
+            print("Goodbye!")
+        if yes_or_no == "y":
+            power_button = True
+
+        
